@@ -1,0 +1,177 @@
+{% extends 'layoutNav.html' %}
+
+<!-- ======= Extiende de layoutNav para la pagina inicial ======= -->
+
+
+{% load static %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <div class="col-lg-3">
+           <!-- Card with an image on top -->
+           <div class="card">
+            <img src="{% static 'assets/img/course-details-tab-1.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card with an image on top</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+            </div>
+          </div><!-- End Card with an image on top -->
+      </div>
+
+      <div class="col-lg-3">
+          <!-- Card with an image on top -->
+          <div class="card">
+            <img src="{% static 'assets/img/course-details-tab-2.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card with an image on top</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+            </div>
+          </div><!-- End Card with an image on top -->
+      </div>
+
+      <div class="col-lg-3">
+          <!-- Card with an image on top -->
+          <div class="card">
+            <img src="{% static 'assets/img/course-details-tab-3.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card with an image on top</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+            </div>
+          </div><!-- End Card with an image on top -->
+      </div>
+
+      <div class="col-lg-3">
+           <!-- Card with an image on top -->
+           <div class="card">
+            <img src="{% static 'assets/img/course-details-tab-4.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card with an image on top</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+            </div>
+          </div><!-- End Card with an image on top -->
+      </div>
+
+    </div>
+
+  </section>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Datatables</h5>
+            <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
+
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Age</th>
+                  <th scope="col">Aciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Brandon Jacob</td>
+                  <td>Designer</td>
+                  <td>28</td>
+                  <td>
+                    <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                    <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                    <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Bridie Kessler</td>
+                  <td>Developer</td>
+                  <td>35</td>
+                  <td>
+                    <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                    <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                    <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Ashleigh Langosh</td>
+                  <td>Finance</td>
+                  <td>45</td>
+                  <td>
+                    <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                    <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                    <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>Angus Grady</td>
+                  <td>HR</td>
+                  <td>34</td>
+                  <td>
+                    <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                    <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                    <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td>Raheem Lehner</td>
+                  <td>Dynamic Division Officer</td>
+                  <td>47</td>
+                  <td>
+                    <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                    <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                    <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+
+{% endblock %}
