@@ -17,6 +17,7 @@ def home(request):
         'profesores': profesores
     }
     return render(request, 'home/index.html', context)
+    
 
 
 def logIn(request):

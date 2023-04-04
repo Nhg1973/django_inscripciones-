@@ -6,6 +6,7 @@ from gestion_personas.models import Alumno, Docente, Tutor
 class Categoria(models.Model):
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
+    photo = models.ImageField(upload_to="categorias")
 
     def __str__(self):
         return self.nombre
