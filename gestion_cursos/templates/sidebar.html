@@ -13,6 +13,37 @@
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      {% if request.user.ingresopersona %}
+      <p style="color: red;">Datos por completar</p>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#profile-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Perfil</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="profile-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+       
+          
+            <li>
+              <a href="components-alerts.html">
+                <i class="bi bi-circle"></i><span>Ver</span>
+              </a>
+            </li>
+         
+          <li>
+            <a href="components-accordion.html">
+              <i class="bi bi-circle"></i><span>Crear</span>
+            </a>
+          </li>
+          <li>
+            <a href="components-badges.html">
+              <i class="bi bi-circle"></i><span>Borrado Lógico</span>
+            </a>
+          </li>
+          
+        </ul>
+         
+         
+      </li><!-- End Profile Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -122,6 +153,7 @@
       </li><!-- End Inscribirme Nav -->
 
     </ul>
+    {% endif %}
 
   </aside><!-- End Sidebar-->
 
