@@ -1,17 +1,43 @@
 from django.shortcuts import render, redirect
-from gestion_personas.models import Alumno
+from gestion_cursos.models import Curso, Inscripcion
+from gestion_personas.models import Alumno, Docente
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def dashboard(request):
-     titulo = 'Personal'
-     context = {
+     titulo = 'Dashboard'
+     rol = request.GET.get('rol')
+     photo = request.GET.get('photo', None)
+     
 
-        'titulo':titulo
-    }
-    
-     return render(request, 'dashboard.html', context)
+     if(rol == 'docente'):
+          user = request.user
+          docente = Docente.objects.get(user=user)
+          cursos = Curso.objects.filter(docente_titular=docente)
+          cursos_con_alumnos = {}
+
+          for curso in cursos:
+               inscripciones = Inscripcion.objects.filter(curso=curso)
+               alumnos = [inscripcion.alumno for inscripcion in inscripciones]
+               cursos_con_alumnos[curso.nombre] = alumnos 
+               
+               
+          context = {
+                    'titulo':titulo,
+                    'user': user,
+                    'docente': docente,
+                    'cursos_con_alumnos': cursos_con_alumnos,
+                    'photo':photo
+          }
+
+          return render(request, 'dashboard.html', context)
+     else:
+          context = {
+                    'photo':photo
+          }
+          return render(request, 'dashboard.html', context)
+
 
 def registro(request):
      
@@ -66,3 +92,5 @@ def registro(request):
                'error': 'Las contraseñas NO son iguales'
           },context)
 
+def cargaDatos(request):
+     return render(request, 'users-profile.html')

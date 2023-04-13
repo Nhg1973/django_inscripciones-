@@ -1568,3 +1568,8 @@ section {
   color: #fff;
   text-decoration: none;
 }
+
+.alert-fadeout {
+  opacity: 1;
+  transition: opacity 2s ease-in-out;
+}

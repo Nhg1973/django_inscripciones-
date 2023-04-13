@@ -181,7 +181,7 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
            
           {% if photo != "defaul.jpg" %}
-            <img src="{{ MEDIA_URL }}/{{ photo }}" alt="Imagen de perfil">
+            <img src="{{ MEDIA_URL }}{{ photo }}" alt="Imagen de perfil">
           {% else %}
             <img src="{% static 'assets/img/defaul.jpg' %}" alt="Imagen de perfil">
           {% endif %}

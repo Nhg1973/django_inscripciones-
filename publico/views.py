@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -36,8 +37,8 @@ def logIn(request):
             request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
             return render(request, 'auth/pages-login.html',{
-                'error':'Usuario o Contraseña incorrecta'
-            },context)
+                'Error':'Usuario o Contraseña incorrecta'
+            })
         else:
             login(request,user)
 
@@ -46,11 +47,18 @@ def logIn(request):
             'rol': 'alumno' if hasattr(request.user, 'alumno') else 'docente' if hasattr(request.user, 'docente') else 'tutor'if hasattr(request.user, 'tutor') else 'ingresante',
             'photo': request.user.alumno.photo if hasattr(request.user, 'alumno') else request.user.docente.photo if hasattr(request.user, 'docente') else request.user.tutor.photo if hasattr(request.user, 'tutor') else 'defaul.jpg',
             }
+
+
             if context['rol'] == 'ingresante':
                 return render(request, 'users-profile.html', context)
+            
             else:
                 # Si no se cumple ninguna de las condiciones anteriores, renderizar la plantilla 'users-profile.html'
-                return render(request, 'dashboard.html', context)
+                if 'photo' in context and context['photo'] != 'defaul.jpg':
+                    photo_url = context.get('photo', '').url
+                    return redirect(reverse('dashboard') + '?photo=' + photo_url + '&rol=' + context['rol'] )
+                else:
+                    return redirect(reverse('dashboard') + '?photo=defaul.jpg' + '&rol=' + context['rol'] )
 
     else:
         return render(request, 'auth/pages-login.html',context)
@@ -81,17 +89,22 @@ def register(request):
 
                 ingreso = IngresoPersona(user=user)
                 ingreso.save()
+                photo = 'defaul.jpg'
                 
                 login(request, user)
-                return redirect('dashboard')
+
+                context = {
+                    'photo':photo
+                }
+                return render(request,'users-profile.html', context)
             except:
                 return render(request, 'auth/pages-register.html', {
-                    'error': 'El Usuario ya existe'
-                },context)
+                    'Error': 'El Usuario ya existe'
+                })
 
         return render(request, 'auth/pages-register.html', {
-            'error': 'Las contraseñas NO son iguales'
-        },context)
+            'Error': 'Las contraseñas NO son iguales'
+        })
 
 
 def forgot(request):#falta formulario de recuperacion de contraseña
