@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from gestion_cursos.models import Curso, Inscripcion
-from gestion_personas.models import Alumno, Docente
+from gestion_personas.models import Alumno, Docente, Tutor
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -9,6 +9,31 @@ def dashboard(request):
      titulo = 'Dashboard'
      rol = request.GET.get('rol')
      photo = request.GET.get('photo', None)
+
+     if(rol == 'tutor'):
+          user = request.user
+          docentes = Docente.objects.all()
+          cursos = Curso.objects.all()
+          alumnos = Alumno.objects.all()
+          docente = Tutor.objects.get(user=user)
+          cursos_con_alumnos = {}
+
+          for curso in cursos:
+               inscripciones = Inscripcion.objects.filter(curso=curso)
+               alumnos = [inscripcion.alumno for inscripcion in inscripciones]
+               cursos_con_alumnos[curso.nombre] = alumnos 
+               
+               
+          context = {
+                    'titulo':titulo,
+                    'user': user,
+                    'alumnos' :  alumnos,
+                    'docentes': docente,
+                    'cursos_con_alumnos': cursos_con_alumnos,
+                    'photo':docente.photo
+          }
+
+          return render(request, 'dashboard.html', context)
      
 
      if(rol == 'docente'):
@@ -28,7 +53,7 @@ def dashboard(request):
                     'user': user,
                     'docente': docente,
                     'cursos_con_alumnos': cursos_con_alumnos,
-                    'photo':photo
+                    'photo':docente.photo
           }
 
           return render(request, 'dashboard.html', context)
@@ -36,7 +61,7 @@ def dashboard(request):
           context = {
                     'photo':photo
           }
-          return render(request, 'dashboard.html', context)
+          return render(request, 'dashboardAlumnos.html', context)
 
 
 def registro(request):
@@ -94,3 +119,6 @@ def registro(request):
 
 def cargaDatos(request):
      return render(request, 'users-profile.html')
+
+def dasboardAlumnos(request):
+     return render(request, 'DashboardAlumnos.html')

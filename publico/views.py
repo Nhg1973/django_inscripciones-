@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from gestion_cursos.models import Categoria, Curso
 from gestion_personas.models import Alumno, Docente, IngresoPersona

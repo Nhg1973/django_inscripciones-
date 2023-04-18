@@ -8,77 +8,6 @@
 {% block content %}
 
 <main id="main" class="main">
-
-  <!--section class="section dashboard">
-    <div class="row">
-
-      <div class="col-lg-3">
-           
-           <div class="card">
-            <img src="{% static 'assets/img/course-details-tab-1.png' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card with an image on top</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="card-body">
-              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
-              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3">
-          
-          <div class="card">
-            <img src="{% static 'assets/img/course-details-tab-2.png' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card with an image on top</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="card-body">
-              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
-              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3">
-          
-          <div class="card">
-            <img src="{% static 'assets/img/course-details-tab-3.png' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card with an image on top</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="card-body">
-              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
-              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3">
-         
-           <div class="card">
-            <img src="{% static 'assets/img/course-details-tab-4.png' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card with an image on top</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="card-body">
-              <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-              <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
-              <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
-            </div>
-          </div>
-      </div>
-
-    </div>
-
-  </section-->
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -107,18 +36,13 @@
                         {% endif %}
                         <td>{{ alumno.nombre }} {{ alumno.apellido }}</td>
                         <td>
-                          <button type="button" class="btn btn-success" ><i class="bi bi-check-circle"></i></button>
+                          <a href="{% url 'gestion:ver_alumno' id=alumno.id %}" class="btn btn-success">Ver alumno</a>
                           <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
                           <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
                           <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
                         </td>
                       </tr>
                     {% endfor %}
-                  {% else %}
-                    <tr>
-                      <td>{{ curso }}</td>
-                      <td colspan="2">No hay alumnos inscritos en este curso</td>
-                    </tr>
                   {% endif %}
                 {% endfor %}
               </tbody>
@@ -137,3 +61,5 @@
 
 
 {% endblock %}
+
+
