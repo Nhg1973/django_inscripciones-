@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from gestion_cursos.models import Categoria, Curso
 from gestion_personas.models import Alumno, Docente, IngresoPersona
+from .fomrs.user_registration_form import ProfileEditForm
 
 
 
@@ -51,7 +52,7 @@ def logIn(request):
 
 
             if context['rol'] == 'ingresante':
-                return render(request, 'users-profile.html', context)
+                return redirect('carga_datos')
             
             else:
                 # Si no se cumple ninguna de las condiciones anteriores, renderizar la plantilla 'users-profile.html'
@@ -137,3 +138,25 @@ def contactos(request):
     }
     
     return render(request, 'auth/pages-contact.html',context)
+
+def carga_datos(request): #Falta pasar contexto photo y rol que lo tiene que traer de login
+     
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST)
+        if form.is_valid():
+            # process form data
+            username = form.cleaned_data['username']
+            firstName = form.cleaned_data['firstName']
+            # and so on for other form fields
+        else:
+            form = ProfileEditForm()
+
+        context = {'form': form}
+
+        return render(request, 'users-profile.html', context)
+
+    # Si la solicitud no es 'POST'
+    form = ProfileEditForm()
+    context = {'form': form}
+    return render(request, 'users-profile.html', context)
+

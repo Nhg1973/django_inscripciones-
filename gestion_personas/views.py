@@ -1,8 +1,14 @@
-from django.shortcuts import render, redirect
-from gestion_cursos.models import Curso, Inscripcion
-from gestion_personas.models import Alumno, Docente, Tutor
+from django.shortcuts import render, redirect, get_object_or_404
+from gestion_cursos.models import Categoria, Curso, Inscripcion
+from gestion_personas.models import Alumno, Docente, IngresoPersona, Tutor
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
+from publico.fomrs.user_registration_form import ProfileEditForm
+from django.contrib import messages
+
+
 
 @login_required
 def dashboard(request):
@@ -17,13 +23,10 @@ def dashboard(request):
           alumnos = Alumno.objects.all()
           docente = Tutor.objects.get(user=user)
           cursos_con_alumnos = {}
-
           for curso in cursos:
                inscripciones = Inscripcion.objects.filter(curso=curso)
                alumnos = [inscripcion.alumno for inscripcion in inscripciones]
-               cursos_con_alumnos[curso.nombre] = alumnos 
-               
-               
+               cursos_con_alumnos[curso.nombre] = alumnos               
           context = {
                     'titulo':titulo,
                     'user': user,
@@ -32,22 +35,17 @@ def dashboard(request):
                     'cursos_con_alumnos': cursos_con_alumnos,
                     'photo':docente.photo
           }
-
-          return render(request, 'dashboard.html', context)
+          return render(request, 'dashboardTutor.html', context)
      
-
      if(rol == 'docente'):
           user = request.user
           docente = Docente.objects.get(user=user)
           cursos = Curso.objects.filter(docente_titular=docente)
           cursos_con_alumnos = {}
-
           for curso in cursos:
                inscripciones = Inscripcion.objects.filter(curso=curso)
                alumnos = [inscripcion.alumno for inscripcion in inscripciones]
                cursos_con_alumnos[curso.nombre] = alumnos 
-               
-               
           context = {
                     'titulo':titulo,
                     'user': user,
@@ -55,70 +53,90 @@ def dashboard(request):
                     'cursos_con_alumnos': cursos_con_alumnos,
                     'photo':docente.photo
           }
-
           return render(request, 'dashboard.html', context)
      else:
+          user = request.user
+          alumno = Alumno.objects.get(user=user)
+          # Obtiene el contenido del contexto de la vista dashboardAlumnos
+          cursos = Curso.objects.all()
+          profesores = Docente.objects.all()
           context = {
-                    'photo':photo
+               'cursos': cursos,
+               'profesores': profesores,
+               'titulo': 'Dashboard Alumnos',
+               'user': user,
+               'alumno': alumno, 
+               'photo': alumno.photo
           }
-          return render(request, 'dashboardAlumnos.html', context)
+          return render(request, 'DashboardAlumnos.html', context)
 
 
 def registro(request):
-     
-     titulo = 'Registro'
-     context = {
+    titulo = 'Registro'
+    context = {'titulo':titulo}
 
-          'titulo':titulo
-     }
-     if request.method == 'GET':
-          return render(request, 'auth/pages-register.html',context)
+    if request.method == 'GET':
+        form = ProfileEditForm()
+        context['form'] = form
+        return render(request, 'auth/pages-register.html', context)
+    
+    elif request.method == 'POST':
+        form = ProfileEditForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            ingreso_persona = get_object_or_404(IngresoPersona, user=user)
 
-     else:
-          if request.method == 'POST':
-               
-                   
-                    user = request.user
-                    nombre = request.POST.get('firstName')
-                    apellido = request.POST.get('lastName')
-                    about = request.POST.get('about')
-                    que = request.POST.get('company')
-                    donde = request.POST.get('job')
-                    pais = request.POST.get('country')
-                    direccion = request.POST.get('address')
-                    telefono = request.POST.get('phone')
-                    twitter = request.POST.get('twitter')
-                    facebook = request.POST.get('Facebook')
-                    instagram = request.POST.get('instagram')
-                    linkedin = request.POST.get('linkedin')
-                    
-                    alumno = Alumno(
-                         user=user,
-                         nombre=nombre,
-                         apellido=apellido,
-                         about=about,
-                         que=que,
-                         donde=donde,
-                         pais=pais,
-                         direccion=direccion,
-                         telefono=telefono,
-                         twitter=twitter,
-                         facebook=facebook,
-                         instagram=instagram,
-                         linkedin=linkedin
-                    )
+            alumno = Alumno(
+                user=user,
+                nombre=form.cleaned_data['firstName'],
+                apellido=form.cleaned_data['lastName'],
+                about=form.cleaned_data['about'],
+                que=form.cleaned_data['company'],
+                donde=form.cleaned_data['job'],
+                pais=form.cleaned_data['country'],
+                direccion=form.cleaned_data['address'],
+                telefono=form.cleaned_data['phone'],
+                twitter=form.cleaned_data['twitter'],
+                facebook=form.cleaned_data['facebook'],
+            )
+            
+            alumno.save()
+            # Eliminar instancia de IngresoPersona
+            ingreso_persona.delete()
 
-                    alumno.save()
-               
-                    return render(request, 'dashboard.html', context)
-               
+            messages.set_level(request, messages.SUCCESS)
+            messages.success(request, 'Ya estas registrado puedes seleccionar los cursos en los que quieras participar')
 
-          return render(request, 'auth/pages-register.html', {
-               'error': 'Las contraseñas NO son iguales'
-          },context)
+            # Obtiene el contenido del contexto de la vista dashboardAlumnos
+            cursos = Curso.objects.all()
+            profesores = Docente.objects.all()
+            context_dashboard = {
+                'cursos': cursos,
+                'profesores': profesores,
+                'titulo': 'Dashboard Alumnos',
+            }
+            # Agrega el contenido de la vista dashboardAlumnos al contexto actual
+            context.update(context_dashboard)
+            context.update({
+                'user': user,
+                'alumno': alumno, 
+                'photo': alumno.photo
+            })
+
+            return render(request, 'DashboardAlumnos.html', context)
+        else:
+            # Agregar errores al contexto y mostrarlos en la página
+            context['form'] = form
+            messages.error(request, 'Por favor corrija los errores en el formulario.')
+            return render(request, 'users-profile.html', context)
+    else:
+        return render(request, 'auth/pages-register.html', {'error':'Las de contenido'}, context)
+
+
 
 def cargaDatos(request):
      return render(request, 'users-profile.html')
 
 def dasboardAlumnos(request):
+     
      return render(request, 'DashboardAlumnos.html')

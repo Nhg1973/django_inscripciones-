@@ -95,7 +95,7 @@
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{% url 'dashboard' %}">
               <i class="bi bi-circle"></i><span>Asignar docente</span>
             </a>
           </li>
@@ -130,11 +130,14 @@
               <i class="bi bi-circle"></i><span>Asignar a curso</span>
             </a>
           </li>
+          {% if request.user.alumno %}
           <li>
-            <a href="forms-elements.html">
+            <a href="{% url 'gestion:seleccionar_cursos' %}">
+
               <i class="bi bi-circle"></i><span>Inscribirme</span>
             </a>
           </li>
+          {% endif %}
           <li>
             <a href="forms-layouts.html">
               <i class="bi bi-circle"></i><span>Editar mi inscripción</span>

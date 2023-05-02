@@ -13,4 +13,5 @@ urlpatterns = [
     path('cursos/',cursos, name='cursos'),
     path('docentes/',docentes, name='docentes'),
     path('contactos/',contactos, name='contactos'),
+    path('carga-datos/', carga_datos, name='carga_datos')
 ]

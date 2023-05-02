@@ -1,0 +1,75 @@
+● El PIG debe subirse a un repositorio GIT público en la nube.
+https://github.com/Nhg1973/django_inscripciones-.git
+● El proyecto deberá poseer al menos una aplicación de Django
+- Gestion_cursos	Gestionan la parte personal (una vez que el user se allá logueado)
+-gestion_personas
+-publico	Gestiona la parte pública, puede navegar cualquier persona, sin necesidad de autenticar usuario
+● Deben existir al menos 3 rutas distintas.
+App/urls /publico
+
+urlpatterns = [
+    path('',home, name='home'),
+    path('login/',logIn, name='logIn'),
+    path('register/',register, name='register'),
+    path('logout/',logOut, name='logOut'),
+    path('forgot-password/',forgot, name='forgot'),
+    path('nosotros/',nosotros, name='nosotros'),
+    path('cursos/',cursos, name='cursos'),
+    path('docentes/',docentes, name='docentes'),
+    path('contactos/',contactos, name='contactos'),
+]
+
+App/urls /gestion_cursos
+urlpatterns = [
+    path('ver-alumno/<int:id>/', views.ver_alumno, name='ver_alumno'),
+]
+App/urls /gestion_personas
+urlpatterns = [
+    path('',dashboard, name='dashboard' ),
+    path('registro/',registro, name='registro'),
+    path('carga_datos',cargaDatos, name='cargaDatos'),
+]
+
+● Debe existir al menos una vista parametrizada.
+    path('ver-alumno/<int:id>/', views.ver_alumno, name='ver_alumno'),
+Muestra a un alumno por medio de su id, método ver_alumno/views gestión_cursos
+
+
+● Se deben utilizar templates que cumplan con las siguientes características:
+• Debe haber al menos un template asociado a una vista.
+Publico/template/ home: (8) -layout + 8 include (about, cursos, categorías, sombre nosotros, preguntas frecuentes, docentes, experiencias de usuario)
+Publico/template/ Auth: (4) – Login, Logout, Registro, pageblanck (layout)
+Gestión_personas/template (3):Layaout, header, user
+Gestión_cursos/template (4):sidebar, dashboard, dashboardAlumnos,perfilAlumnos
+
+• Debe existir al menos una relación de herencia entre los templates.
+Todas tienen relaciones, tipo extends e include
+• Debe existir al menos un filtro aplicado.
+El Sidebar y el Nav de la parte personal, muestra información de acuerdo al rol del usuario, por medio de un if.
+• Debe existir al menos un template que utilice archivos estáticos (js, css, etc).
+Todos los templete utilizan archivo y estilos estáticos. Carpeta STATICS {% load STATICS %}
+No utilizamos Fomrs de Django. (Punto en contra)
+● Se deben utilizar Django Forms que cumplan con las siguientes características:
+• Al menos un formulario debe poseer validaciones en el front-end y en el back-end
+El formulario de Registro de un nuevo Alumno valida que se cargue el nombre, apellido y dirección validación Front-End y usamos el decorador require_login en el método dashboard.
+• Debe haber al menos un formulario asociado a un template.
+No se a que se refiere.
+• Debe haber al menos un formulario basado en clases.
+• Debe haber al menos un formulario asociado a un modelo.
+● Deben existir al menos dos modelos distintos
+Gestión_personas: tiene 6 modelos todos con relaciones 1:1 con user.
+● En los modelos generados, debe haber al menos una relación de uno a muchos y una
+relación de muchos a muchos.
+En gestión_cursos: (4) modelos en Cursos hay una relación ManyToMany
+inscriptos = models.ManyToManyField(Alumno, through='Inscripcion')
+
+● El proyecto debe funcionar utilizando un servidor de base de datos local dentro de los
+soportados (en el curso se recomienda PostgreSQL), y debe poseer las migraciones
+necesarias para su funcionamiento (no se permite utilizar SQLLite).
+Utilizamos MySql de XAMPP
+● Debe poder accederse al admin de Django y al menos los modelos que poseen la relación
+muchos a muchos deben poder administrarse del mismo.
+Tenemos el superUser,en Cursos de admin se puede ingresar a inscripciones y administrar que alumnos están inscriptos en que cuersos
+● El proyecto debe poseer al menos una página a la que solo se pueda acceder mediante
+autenticación y la misma debe ser validada tanto en el front-end como el back-end.
+Condiciones de aprobación y metodología de entrega: para aprobar el proyecto se requiere una
