@@ -26,24 +26,46 @@
               </thead>
               <tbody>
                 {% for curso, alumnos in cursos_con_alumnos.items %}
-                  {% if alumnos %}
-                    {% for alumno in alumnos %}
-                      <tr>
-                        {% if forloop.first %}
-                          <td rowspan="{{ alumnos|length }}">{{ curso }}</td>
-                        {% endif %}
-                        <td>{{ alumno.nombre }} {{ alumno.apellido }}</td>
-                        <td>
-                          <a href="{% url 'gestion:ver_alumno' id=alumno.id %}" class="btn btn-success">Ver alumno</a>
-                          <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-                          <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
-                          <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                  {% endif %}
+                    {% if alumnos %}
+                        {% for alumno in alumnos %}
+                            {% if forloop.first %}
+                                <tr>
+                                    <td rowspan="{{ alumnos|length }}">{{ curso }}</td>
+                                    <td>{{ alumno.nombre }} {{ alumno.apellido }}</td>
+                                    <td>
+                                        <a href="{% url 'gestion:ver_alumno' id=alumno.id %}" class="btn btn-success">Ver alumno</a>
+                                        <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                                        <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                                        <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td></td>
+                                    <td>{{ alumno.nombre }} {{ alumno.apellido }}</td>
+                                    <td>
+                                        <a href="{% url 'gestion:ver_alumno' id=alumno.id %}" class="btn btn-success">Ver alumno</a>
+                                        <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                                        <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                                        <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>{{ curso }}</td>
+                            <td colspan="2">No hay alumnos en este curso</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
-              </tbody>
+            </tbody>
+            
+            
+            
+            
+            
+
             </table>
             
             <!-- End Table with stripped rows -->
