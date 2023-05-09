@@ -10,7 +10,7 @@ from .fomrs.user_registration_form import ProfileEditForm
 
 
 def home(request):
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.filter(eliminada=False)
     cursos = Curso.objects.all()
     alumnos = Alumno.objects.all()
     profesores = Docente.objects.all()
