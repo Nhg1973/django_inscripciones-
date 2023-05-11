@@ -18,11 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('publico/',include('publico.urls')),
-    path('cursos/',include('gestion_personas.urls')),
-    path('gestion/',include('gestion_cursos.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', RedirectView.as_view(url='/publico/')),
+    path('publico/', include('publico.urls')),
+    path('cursos/', include('gestion_personas.urls')),
+    path('gestion/', include('gestion_cursos.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
