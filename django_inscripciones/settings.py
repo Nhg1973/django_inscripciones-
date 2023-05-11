@@ -126,6 +126,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/home/Nahuel1973/nahuel1973.pythonanywhere.com/django_inscripciones/static'
+
+
 STATICFILES_DIRS = [
     'django_inscripciones/static/',
 ]
