@@ -5,9 +5,11 @@ from .views import (
     CategoriaUpdateView,
     CategoriaDeleteView,
     CategoriaListView,
+    gestion_inscripcion,
+    solicitud_inscripcion,
+    solicitudes_gestionar_view,
     ver_alumno,
     seleccionar_cursos,
-
 )
 
 app_name = 'gestion'
@@ -20,5 +22,8 @@ urlpatterns = [
     path('categorias/<int:pk>/eliminar/', CategoriaDeleteView.as_view(), name='eliminar_categoria'),
     path('categorias/<int:pk>/alta/', CategoriaAltaView.as_view(), name='dar_alta_categoria'),
     path('categorias/', CategoriaListView.as_view(), name='categorias'),
+    path('curso/<int:curso_id>/solicitud_inscripcion/', solicitud_inscripcion, name='solicitud_inscripcion'),
+    path('solicitudes-gestionar/', solicitudes_gestionar_view, name='solicitudes-gestionar'),
+    path('solicitud-inscripcion/', gestion_inscripcion, name='gestion_inscripcion')
 
 ]

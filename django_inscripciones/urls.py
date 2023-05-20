@@ -26,5 +26,6 @@ urlpatterns = [
     path('publico/', include('publico.urls')),
     path('cursos/', include('gestion_personas.urls')),
     path('gestion/', include('gestion_cursos.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),#debug tool bar
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'gestion_personas',
     'gestion_cursos',
     'publico',
+    'debug_toolbar',#debug Tool
 ]
 
 MIDDLEWARE = [
@@ -37,6 +38,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',#debug tool
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -118,9 +120,9 @@ STATICFILES_DIRS = [
 ]
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static') para pythonanywghere
 
-ALLOWED_HOSTS = ['your.pythonanywhere.domain.com']
+#ALLOWED_HOSTS = ['your.pythonanywhere.domain.com']
 
 
 
@@ -132,3 +134,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

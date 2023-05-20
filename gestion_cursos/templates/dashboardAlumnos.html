@@ -78,7 +78,17 @@
                       </th>                      
                         <td><a href="#" class="text-primary">{{ curso.nombre }}</a></td>
                         <td>{{ curso.cupo}}</td>
-                        <td class="text-start"><span class="badge bg-success">Vacantes</span></td>
+                        {% if curso.cupo > 0 %}
+                        <td>
+                            <form method="POST" action="{% url 'gestion:solicitud_inscripcion' curso.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="alumno_id" value="{{ alumno.id }}">
+                                <button type="submit" class="btn btn-success">Solicitar inscripción</button>
+                            </form>
+                        </td>
+                        {% else %}
+                            <td class="text-start"><button class="btn btn-danger">Sin vacantes</button></td>
+                        {% endif %}
 
                       </tr>
                       {% endfor %}

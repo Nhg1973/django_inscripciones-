@@ -33,7 +33,7 @@ class Curso(models.Model):
 
     def __str__(self):
         return self.nombre
-
+    
 
 class Proyecto(models.Model):
     nombre = models.CharField(max_length=255)
@@ -47,11 +47,35 @@ class Proyecto(models.Model):
 
 
 class Inscripcion(models.Model):
+    ESTADO_CHOICES = (
+        ('S', 'Solicitado'),
+        ('A', 'Aceptado'),
+        ('R', 'Rechazado'),
+        ('P', 'Pendiente'),
+    )
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)
-    aceptado = models.BooleanField(default=False)
+    estado = models.CharField(max_length=1, choices=ESTADO_CHOICES, default='S')
 
     def __str__(self):
         return f"{self.alumno} - {self.curso}"
+
+class SolicitudInscripcion(models.Model):
+    ESTADO_CHOICES = (
+        ('S', 'Solicitado'),
+        ('A', 'Aceptado'),
+        ('R', 'Rechazado'),
+        ('P', 'Pendiente'),
+    )
+
+    alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    fecha_solicitud = models.DateTimeField(default=timezone.now)
+    estado = models.CharField(max_length=1, choices=ESTADO_CHOICES, default='S')
+
+    def __str__(self):
+       return f"{self.alumno} - {self.curso}"
+
+
 

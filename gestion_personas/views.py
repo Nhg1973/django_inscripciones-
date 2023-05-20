@@ -137,6 +137,7 @@ def registro(request):
 def cargaDatos(request):
      return render(request, 'users-profile.html')
 
+
 def dasboardAlumnos(request):
      
      return render(request, 'DashboardAlumnos.html')

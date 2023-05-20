@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
-
 class IngresoPersona(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rol = models.CharField(max_length=50, default='ingresoPersona')
@@ -18,6 +16,7 @@ class Inscripto(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="alumno", default='defaul.jpg')
     rol = models.CharField(max_length=50, default='inscripto')
+
 
 
     def __str__(self):
@@ -59,17 +58,29 @@ class Docente(models.Model):
     class Meta:
         verbose_name_plural = "Docentes"
 
-
 class Tutor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="tutor", default='defaul.jpg')
     rol = models.CharField(max_length=50, default='tutor')
-    
+
     def __str__(self):
         return f"Tutor @{self.user.username}"
+
+    def get_solicitudes_gestionar(self):
+        from gestion_personas.models import Alumno  # Importación diferida
+        from gestion_cursos.models import Curso, SolicitudInscripcion  # Importación diferida
+
+        cursos_tutor = Curso.objects.all()
+        solicitudes = SolicitudInscripcion.objects.filter(curso__in=cursos_tutor)
+        return solicitudes
+
+    class Meta:
+        verbose_name_plural = "Tutores"
+        
     
     class Meta:
         verbose_name_plural = "Tutores"
+
 
 
 

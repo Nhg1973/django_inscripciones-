@@ -1,75 +1,144 @@
 ● El PIG debe subirse a un repositorio GIT público en la nube.
-https://github.com/Nhg1973/django_inscripciones-.git
-● El proyecto deberá poseer al menos una aplicación de Django
-- Gestion_cursos	Gestionan la parte personal (una vez que el user se allá logueado)
--gestion_personas
--publico	Gestiona la parte pública, puede navegar cualquier persona, sin necesidad de autenticar usuario
+    https://github.com/Nhg1973/django_inscripciones-.git
+
+● El proyecto deberá poseer al menos una aplicación de Django:
+    -publico	(Gestiona la parte pública y de autenticación)
+    -gestion_cursos	(Gestionan la parte relacionada a cursos, categorioas inscripciones y proyectos)
+    -gestion_personas (Gestiona lo relacionado a los clientes, roles y transformaciones)
+    
+
 ● Deben existir al menos 3 rutas distintas.
-App/urls /publico
+    urlpatterns = [
+        path('',home, name='home'),
+        path('login/',logIn, name='logIn'),
+        path('register/',register, name='register'),
+        path('logout/',logOut, name='logOut'),
+        path('forgot-password/',forgot, name='forgot'),
+        path('nosotros/',nosotros, name='nosotros'),
+        path('cursos/',cursos, name='cursos'),
+        path('docentes/',docentes, name='docentes'),
+        path('contactos/',contactos, name='contactos'),
+    ]
 
-urlpatterns = [
-    path('',home, name='home'),
-    path('login/',logIn, name='logIn'),
-    path('register/',register, name='register'),
-    path('logout/',logOut, name='logOut'),
-    path('forgot-password/',forgot, name='forgot'),
-    path('nosotros/',nosotros, name='nosotros'),
-    path('cursos/',cursos, name='cursos'),
-    path('docentes/',docentes, name='docentes'),
-    path('contactos/',contactos, name='contactos'),
-]
-
-App/urls /gestion_cursos
-urlpatterns = [
-    path('ver-alumno/<int:id>/', views.ver_alumno, name='ver_alumno'),
-]
-App/urls /gestion_personas
-urlpatterns = [
-    path('',dashboard, name='dashboard' ),
-    path('registro/',registro, name='registro'),
-    path('carga_datos',cargaDatos, name='cargaDatos'),
-]
+    App/urls /gestion_cursos
+    urlpatterns = [
+        path('ver-alumno/<int:id>/', views.ver_alumno, name='ver_alumno'),
+    ]
+    App/urls /gestion_personas
+    urlpatterns = [
+        path('',dashboard, name='dashboard' ),
+        path('registro/',registro, name='registro'),
+        path('carga_datos',cargaDatos, name='cargaDatos'),
+    ]
 
 ● Debe existir al menos una vista parametrizada.
-    path('ver-alumno/<int:id>/', views.ver_alumno, name='ver_alumno'),
-Muestra a un alumno por medio de su id, método ver_alumno/views gestión_cursos
 
+    path('ver-alumno/<int:id>/', views.ver_alumno, name='ver_alumno'),
+    Muestra a un alumno por medio de su id, método ver_alumno/views gestión_cursos
 
 ● Se deben utilizar templates que cumplan con las siguientes características:
 • Debe haber al menos un template asociado a una vista.
-Publico/template/ home: (8) -layout + 8 include (about, cursos, categorías, sombre nosotros, preguntas frecuentes, docentes, experiencias de usuario)
-Publico/template/ Auth: (4) – Login, Logout, Registro, pageblanck (layout)
-Gestión_personas/template (3):Layaout, header, user
-Gestión_cursos/template (4):sidebar, dashboard, dashboardAlumnos,perfilAlumnos
+    Publico/template/ home: (8) -layout + 8 include (about, cursos, categorías, sombre nosotros, preguntas frecuentes, docentes, experiencias de usuario)
+    Publico/template/ Auth: (4) – Login, Logout, Registro, pageblanck (layout)
+    Gestión_personas/template (3):Layaout, header, user
+    Gestión_cursos/template (4):sidebar, dashboard, dashboardAlumnos,perfilAlumnos
 
 • Debe existir al menos una relación de herencia entre los templates.
-Todas tienen relaciones, tipo extends e include
+    Todas tienen relaciones, tipo extends e include
+
 • Debe existir al menos un filtro aplicado.
-El Sidebar y el Nav de la parte personal, muestra información de acuerdo al rol del usuario, por medio de un if.
+    El Sidebar y el Nav de la parte personal, muestra información de acuerdo al rol del usuario, por medio de un if.
+
 • Debe existir al menos un template que utilice archivos estáticos (js, css, etc).
-Todos los templete utilizan archivo y estilos estáticos. Carpeta STATICS {% load STATICS %}
-No utilizamos Fomrs de Django. (Punto en contra)
+    Todos los templete utilizan archivo y estilos estáticos. Carpeta STATICS {% load STATICS %}
+
 ● Se deben utilizar Django Forms que cumplan con las siguientes características:
+Tenemos dos Django Forms:
+    -user_registration_form (publico/forms) class ProfileEditForm(forms.Form):  metodo def carga_datos 
+    Se utiliza para mostrar el formulario y gestionar los ingresos del template users-profile.html, sirve para cargar los datos de un nuevo alumno.
+
+     basado en clases:
+    -create_categoria_form (publico/forms) class CategoriaForm(forms.ModelForm):
+    SE utiliza en el template en la app/gestion_cursos/views create_and_edit_categorias.html para crear,editar categorias.
+
 • Al menos un formulario debe poseer validaciones en el front-end y en el back-end
-El formulario de Registro de un nuevo Alumno valida que se cargue el nombre, apellido y dirección validación Front-End y usamos el decorador require_login en el método dashboard.
+    -user_registration_form 
+        validaciones front-end:
+            widget=forms.TextInput(attrs={'class': 'form-control'}): Este atributo de widget se utiliza para agregar una clase CSS al campo de entrada, lo que puede ser útil para la validación y el estilo en el lado del cliente.
+            required=False: El campo profile_image tiene esta opción para permitir que el usuario no seleccione una imagen de perfil.
+        validaciones back-end: form.is_valid()
+            solo_caracteres: Esta función de validación personalizada verifica si el valor del campo contiene solo caracteres alfanuméricos, espacios y ciertos caracteres especiales permitidos.
+            custom_validate_email: Esta función de validación personalizada utiliza una expresión regular para verificar si el valor del campo email es una dirección de correo electrónico válida.
+            clean_job: Este método de validación verifica si el valor del campo job es una opción válida seleccionada por el usuario.
+            clean: Este método de validación se utiliza para realizar validaciones adicionales y globales en el formulario en su conjunto, como asegurarse de que se completen todos los campos requeridos.
+
 • Debe haber al menos un formulario asociado a un template.
-No se a que se refiere.
+users-profile.html
+    Dentro del <div class="tab-pane fade show active profile-overview" id="profile-overview">, se encuentra el formulario en sí, definido mediante la etiqueta <form>.
+    Se especifica el método de envío (method="POST") y se agrega el token CSRF ({% csrf_token %}) para proteger contra ataques CSRF.
+
+    El formulario se renderiza utilizando la variable de contexto form con la línea {{ form.as_p }}.
+    El filtro as_p se utiliza para mostrar cada campo del formulario como un párrafo <p>, 
+    lo que proporciona un diseño básico para el formulario.
+
+    Además, se incluye una sección condicional {% if form.errors %} para manejar los errores de validación. Si hay errores en el formulario, se muestra un mensaje de alerta <div class="alert alert-danger"> que enumera los errores específicos para cada campo del formulario. 
+    Esto se logra con los bucles {% for field_errors in form.errors.values %} y {% for error in field_errors %} que recorren los errores de cada campo y los muestran en una lista <ul>.
+
 • Debe haber al menos un formulario basado en clases.
+    getion_cursos/views/class CategoriaCreateView(CreateView):
+    CategoriaCreateView es una subclase de CreateView y define las siguientes propiedades:
+
+    model: Especifica el modelo al que está asociado el formulario, en este caso, el modelo Categoria.
+    fields: Especifica los campos del modelo que se mostrarán en el formulario, en este caso, los campos 'nombre', 'descripcion' y 'photo'.
+    template_name: Especifica el nombre del template (plantilla) que se utilizará para renderizar la vista, en este caso, 'create_and_edit_categorias.html'.
+
+    Además de las propiedades, la clase CategoriaCreateView también incluye el método form_valid, que se llama cuando el formulario es válido. 
+    En este método, se realiza una acción adicional para asignar el tutor actual (self.request.user.tutor) como el tutor de la nueva categoría. Esto se logra mediante la asignación de form.instance.tutor.
+
+    La clase CreateView proporciona funcionalidad predefinida para manejar la creación de un objeto del modelo especificado. 
+    Utiliza el template proporcionado para renderizar el formulario y se encarga de procesar los datos ingresados por el usuario, realizar las validaciones y guardar el objeto en la base de datos.
+
 • Debe haber al menos un formulario asociado a un modelo.
+    publico/forms/crate_categoria_form.py 
+    class CategoriaForm(forms.ModelForm):
+    CategoriaForm, que hereda de forms.ModelForm. 
+    El formulario está asociado al modelo Categoria y define los campos que se incluirán. 
+    Además, se personaliza el formulario en el método __init__ para agregar clases CSS a los widgets de los campos.
+
 ● Deben existir al menos dos modelos distintos
-Gestión_personas: tiene 6 modelos todos con relaciones 1:1 con user.
+    Gestión_personas: tiene 6 modelos todos con relaciones 1:1 con user.
+        El modelo IngresoPersona tiene una relación de OneToOneField con el modelo User. Esto significa que un usuario solo puede tener un ingreso de persona asociado y viceversa.
+        El modelo Inscripto tiene una relación de OneToOneField con el modelo User. Esto indica que un usuario solo puede estar inscripto una vez y viceversa.
+        El modelo Alumno tiene una relación de OneToOneField con el modelo User. Esto significa que un usuario solo puede ser un alumno y viceversa.
+        El modelo Docente tiene una relación de OneToOneField con el modelo User. Esto indica que un usuario solo puede ser un docente y viceversa.
+        El modelo Tutor tiene una relación de OneToOneField con el modelo User. Esto significa que un usuario solo puede ser un tutor y viceversa.
+
 ● En los modelos generados, debe haber al menos una relación de uno a muchos y una
 relación de muchos a muchos.
-En gestión_cursos: (4) modelos en Cursos hay una relación ManyToMany
-inscriptos = models.ManyToManyField(Alumno, through='Inscripcion')
+    En gestión_cursos: 
+        Los modelos tienen relaciones 1 a muchos entre Categoria y Tutor, Curso y Categoria, Curso y Docente, Proyecto y Categoria, Proyecto y Curso, Proyecto y Alumno. 
+        También hay una relación muchos a muchos entre Curso y Alumno a través del modelo Inscripcion. 
 
 ● El proyecto debe funcionar utilizando un servidor de base de datos local dentro de los
 soportados (en el curso se recomienda PostgreSQL), y debe poseer las migraciones
 necesarias para su funcionamiento (no se permite utilizar SQLLite).
-Utilizamos MySql de XAMPP
+    Utilizamos MySql de XAMPP
+
 ● Debe poder accederse al admin de Django y al menos los modelos que poseen la relación
 muchos a muchos deben poder administrarse del mismo.
-Tenemos el superUser,en Cursos de admin se puede ingresar a inscripciones y administrar que alumnos están inscriptos en que cuersos
+    Se puede acceder al admin y administrarse todos los modelos inclusive la del modelo Inscripcion que tiene una relacion muchos a muchos.
+
 ● El proyecto debe poseer al menos una página a la que solo se pueda acceder mediante
 autenticación y la misma debe ser validada tanto en el front-end como el back-end.
-Condiciones de aprobación y metodología de entrega: para aprobar el proyecto se requiere una
+    Las aplicaciones gestion_persona y gestion_cursos solo son accesibles por medio de una autenticación 
+
+    Validaciones front-end:
+    (hay que modificar el formulario login)
+    No se encuentran validaciones específicas en el código proporcionado. Las validaciones front-end típicas pueden incluir comprobaciones en el formulario HTML, como campos obligatorios, formato de correo electrónico válido, longitud mínima o máxima, etc.
+
+    Validaciones back-end:
+
+        La función authenticate se encarga de validar las credenciales del usuario en el backend. Verifica si el nombre de usuario y la contraseña proporcionados son correctos y devuelve un objeto User si la autenticación tiene éxito, o None si falla.
+        La validación posterior se realiza para verificar si el usuario es autenticado correctamente o no. Si user es None, se muestra un mensaje de error indicando que el usuario o la contraseña son incorrectos.
+        La función login se utiliza para autenticar al usuario en la sesión actual.
+        La lógica adicional comprueba el tipo de usuario autenticado (alumno, docente, tutor o ingresante) y redirecciona a la página correspondiente.

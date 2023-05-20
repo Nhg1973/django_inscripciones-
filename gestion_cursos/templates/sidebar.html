@@ -42,7 +42,7 @@
           {% endif %}
           
         </ul>
-        {% else %}
+        {% endif %}
          
       </li><!-- End Profile Nav -->
 
@@ -121,9 +121,10 @@
         </a>
         <ul id="formsi-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-validation.html">
+            <a href="{% url 'gestion:solicitudes-gestionar' %}">
               <i class="bi bi-circle"></i><span>Asignar a curso</span>
-            </a>
+          </a>
+          
           </li>
           {% if request.user.alumno %}
           <li>
@@ -152,7 +153,7 @@
       </li><!-- End Inscribirme Nav -->
 
     </ul>
-    {% endif %}
+  
 
   </aside><!-- End Sidebar-->
 

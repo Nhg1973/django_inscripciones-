@@ -1,17 +1,17 @@
 
 from django.shortcuts import redirect, render
-from .models import Categoria, Curso
+from .models import Categoria, Curso, Inscripcion
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .models import Categoria
+from .models import Categoria, SolicitudInscripcion
 
 
 
 
-from gestion_personas.models import Alumno, Docente
+from gestion_personas.models import Alumno, Docente, Tutor
 
 def ver_alumno(request, id):
     titulo = 'Dashboard Docente'
@@ -124,3 +124,64 @@ class CategoriaListView(ListView):
     template_name = 'categorias.html'
 
 
+
+def solicitud_inscripcion(request, curso_id):
+    if request.method == 'POST':
+        alumno_id = request.POST.get('alumno_id')
+        curso = Curso.objects.get(id=curso_id)
+        alumno = Alumno.objects.get(id=alumno_id)
+        solicitud_existente = SolicitudInscripcion.objects.filter(alumno=alumno, curso=curso).exists()
+        if not solicitud_existente:
+            solicitud = SolicitudInscripcion(alumno=alumno, curso=curso)
+            solicitud.save()
+            messages.success(request, 'La solicitud de inscripción se ha enviado correctamente.')
+        else:
+            messages.error(request, 'Ya existe una solicitud de inscripción para este curso.')
+        return redirect('dashboard')
+    else:
+        curso = Curso.objects.get(id=curso_id)
+        alumnos = Alumno.objects.all()
+        return render(request, 'solicitud_inscripcion.html', {'curso': curso, 'alumnos': alumnos})
+
+
+def solicitudes_gestionar_view(request):
+    tutor = Tutor.objects.get(user=request.user)  # Obtener instancia del tutor actual
+    solicitudes = tutor.get_solicitudes_gestionar()  # Obtener las solicitudes a gestionar
+
+    context = {
+        'solicitudes': solicitudes,
+    }
+
+    return render(request, 'solicitudes_gestionar.html', context)
+
+
+def gestion_inscripcion(request):
+    if request.method == 'POST':
+        solicitud_id = request.POST.get('solicitud_id')
+        accion = request.POST.get('accion')
+
+        if accion == 'asignar':
+            solicitud = SolicitudInscripcion.objects.get(id=solicitud_id)
+            solicitud.estado = 'A'
+            solicitud.save()
+
+            # Crear una nueva instancia de Inscripcion con los datos de la solicitud aceptada
+            inscripcion = Inscripcion(alumno=solicitud.alumno, curso=solicitud.curso, estado='A')
+            inscripcion.save()
+
+            # Eliminar la solicitud aceptada
+            solicitud.delete()
+
+        elif accion == 'rechazar':
+            solicitud = SolicitudInscripcion.objects.get(id=solicitud_id)
+            solicitud.estado = 'R'
+            solicitud.save()
+            # Realizar otras acciones necesarias para rechazar la solicitud
+
+        elif accion == 'pendiente':
+            solicitud = SolicitudInscripcion.objects.get(id=solicitud_id)
+            solicitud.estado = 'P'
+            solicitud.save()
+            # Realizar otras acciones necesarias para poner la solicitud en estado pendiente
+
+    return redirect('gestion:solicitudes-gestionar')
